@@ -1,0 +1,77 @@
+{% extends "store/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container my-5">
+
+    <h2 class="mb-4">🛒 Checkout</h2>
+
+    <div class="row g-4">
+        <div class="col-md-7">
+            <div class="card shadow-sm">
+                <div class="card-header bg-dark text-white">
+                    Your Items
+                </div>
+                <div class="card-body">
+
+                    {% if cart_items %}
+                        {% for item in cart_items %}
+                        <div class="d-flex align-items-center mb-3 border-bottom pb-3">
+                            <img src="{{ item.book.cover.url }}"
+                                 class="checkout-img me-3">
+
+                            <div class="flex-grow-1">
+                                <h6 class="mb-1">{{ item.book.title }}</h6>
+                                <small class="text-muted">
+                                    Qty: {{ item.cost }}
+                                </small>
+                            </div>
+
+                            <div class="fw-bold text-success">
+                                ₹{{ item.get_total_price }}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-muted mb-0">Your cart is empty.</p>
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-5">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    Payment Details
+                </div>
+
+                <div class="card-body">
+                    <h4 class="fw-bold text-success mb-3">
+                        Total: ₹{{ total }}
+                    </h4>
+
+                    <form method="post">
+                        {% csrf_token %}
+
+                        <label class="fw-semibold mb-2">Payment Method</label>
+
+                        <select name="payment_method" class="form-select mb-4">
+                            <option value="COD">Cash on Delivery</option>
+                            <option value="UPI">UPI (Google Pay / PhonePe)</option>
+                            <option value="CARD">Debit / Credit Card</option>
+                        </select>
+
+                        <button type="submit"
+                                class="btn btn-success w-100 py-2">
+                            ✅ Place Order
+                        </button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

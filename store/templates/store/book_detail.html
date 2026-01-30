@@ -1,0 +1,31 @@
+{% extends "store/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-md-4">
+        {% if book.cover %}
+            <img src="{{ book.cover.url }}" class="img-fluid rounded shadow">
+        {% else %}
+            <img src="{% static 'store/default-book.jpg' %}" class="img-fluid rounded shadow">
+        {% endif %}
+    </div>
+
+    <div class="col-md-8">
+        <h2>{{ book.title }}</h2>
+        <h5 class="text-muted">by {{ book.author.name }}</h5>
+
+        <p class="mt-3">{{ book.description }}</p>
+
+        <h4 class="text-success fw-bold">₹{{ book.price }}</h4>
+
+        <form method="post" action="{% url 'store:add_to_cart' book.slug %}">
+            {% csrf_token %}
+            <button class="btn btn-primary">Add to Cart</button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+

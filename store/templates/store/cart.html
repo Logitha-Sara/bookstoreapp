@@ -1,0 +1,22 @@
+{% extends "store/base.html" %}
+{% block content %}
+<h1>Your Cart</h1>
+<form method="post" action="{% url 'store:update_cart' %}">
+  {% csrf_token %}
+  <table>
+    <tr><th>Book</th><th>Qty</th><th>Cost</th></tr>
+    {% for item in items %}
+    <tr>
+      <td>{{ item.book.title }}</td>
+      <td>
+        <input type="number" name="qty_{{ item.book.slug }}" value="{{ item.qty }}" min="0">
+      </td>
+      <td>{{ item.cost }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  <p>Total: {{ total }}</p>
+  <button type="submit">Update Cart</button>
+  <a href="{% url 'store:checkout' %}">Checkout</a>
+</form>
+{% endblock %}

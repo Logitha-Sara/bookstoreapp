@@ -1,0 +1,46 @@
+{% extends "store/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <h2 class="mb-4">❤️ My Wishlist</h2>
+
+    {% if wishlist_items %}
+        <div class="row g-4">
+            {% for item in wishlist_items %}
+                <div class="col-md-3">
+                    <div class="card shadow-sm">
+
+                        {% if item.book.cover %}
+                            <img src="{{ item.book.cover.url }}" class="card-img-top">
+                        {% else %}
+                            <img src="{% static 'store/default-book.jpg' %}" class="card-img-top">
+                        {% endif %}
+
+                        <div class="card-body text-center">
+                            <h5>{{ item.book.title }}</h5>
+                            <p class="text-muted">{{ item.book.author.name }}</p>
+                            <p class="fw-bold text-success">₹{{ item.book.price }}</p>
+
+                            <a href="{{ item.book.get_absolute_url }}"
+                               class="btn btn-primary w-100 mb-2">
+                                View Product
+                            </a>
+
+                            <a href="{% url 'store:remove_from_wishlist' item.id %}"
+                               class="btn btn-outline-danger w-100">
+                                Remove ❤️
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-muted">Your wishlist is empty 💔</p>
+    {% endif %}
+
+</div>
+{% endblock %}
+
